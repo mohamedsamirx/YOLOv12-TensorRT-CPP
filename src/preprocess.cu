@@ -38,8 +38,8 @@ __global__ void warpaffine_kernel(
     float src_x = d2s.value[0] * dx + d2s.value[1] * dy + d2s.value[2] + 0.5f;
     float src_y = d2s.value[3] * dx + d2s.value[4] * dy + d2s.value[5] + 0.5f;
 
-    printf("Thread %d: (dx, dy) = (%d, %d), (src_x, src_y) = (%.2f, %.2f)\n",
-           position, dx, dy, src_x, src_y);
+    // printf("Thread %d: (dx, dy) = (%d, %d), (src_x, src_y) = (%.2f, %.2f)\n",
+    //        position, dx, dy, src_x, src_y);
 
     float c0, c1, c2;
 

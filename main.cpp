@@ -53,9 +53,6 @@ int main(int argc, char** argv){
     bool                     isVideo{ false };
 
     assert(argc == 3);
-
-    vector<string> imagePathList;
-    bool                     isVideo{ false };
     if (IsFile(path)){
         string suffix = path.substr(path.find_last_of('.') + 1);
         if (suffix == "jpg" || suffix == "jpeg" || suffix == "png"){
@@ -73,9 +70,11 @@ int main(int argc, char** argv){
         glob(path + "/*.jpg", imagePathList);
     }
 
-    // init model
     YOLOv12 model(engine_file_path, logger);
-
+    
+    if (engine_file_path.find(".onnx") != std::string::npos){
+        return 0;
+    }
 
     if (isVideo) {
         cout << "Opening video: " << path << endl;
@@ -83,7 +82,7 @@ int main(int argc, char** argv){
 
         if (!cap.isOpened()) {
             cerr << "Error: Cannot open video file!" << endl;
-            return;
+            return 0 ;
         }
 
         // Get frame width, height, and FPS
@@ -99,31 +98,27 @@ int main(int argc, char** argv){
 
         if (!videoWriter.isOpened()) {
             cerr << "Error: Cannot open VideoWriter!" << endl;
-            return;
+            return 0 ;
         }
 
         while (true) {
             cv::Mat image;
-            cap >> image;  // Read a frame
+            cap >> image;  
 
             if (image.empty()) {
-                break;  // Exit loop if no more frames
+                break;  
             }
 
             vector<Detection> objects;
 
-            cout << "Image preprocess will start" << endl;
             model.preprocess(image);
-            cout << "Image preprocess done" << endl;
 
             auto start = std::chrono::system_clock::now();
             model.infer();
-            cout << "Model inference done" << endl;
             auto end = std::chrono::system_clock::now();
 
             model.postprocess(objects);
             model.draw(image, objects);
-            cout << "Model postprocess done" << endl;
 
             auto tc = (double)std::chrono::duration_cast<std::chrono::microseconds>(end - start).count() / 1000.;
             printf("Cost %2.4lf ms\n", tc);
