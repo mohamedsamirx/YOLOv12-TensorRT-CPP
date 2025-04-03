@@ -83,9 +83,9 @@ cmake --build . --config Release
 ### 4- Create a TensorRT Engine
 
 Convert the ONNX model to a TensorRT engine:
-
+From the build directory run:
 ```bash
-./yolov12-tensorrt.exe yolo12n.onnx ""
+./yolov12-tensorrt yolo12n.onnx ""
 ```
 
 ### 5- Run Inference on an Image
@@ -93,7 +93,7 @@ Convert the ONNX model to a TensorRT engine:
 Perform object detection on an image:
 
 ```bash
-./yolov12-tensorrt.exe yolo12n.engine "zidane.jpg"
+./yolov12-tensorrt yolo12n.engine "zidane.jpg"
 ```
 
 ### 6- Run Inference on a Video
@@ -101,7 +101,7 @@ Perform object detection on an image:
 Perform object detection on a video:
 
 ```bash
-./yolov12-tensorrt.exe yolo12n.engine "road.mp4"
+./yolov12-tensorrt yolo12n.engine "road.mp4"
 ```
 
 ### License
